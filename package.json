@@ -1,0 +1,27 @@
+{
+  "name": "aws-instance-metadata",
+  "version": "1.0.0",
+  "description": "A utility for retrieving the desired AWS EC2 instance metadata from a running instance",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mixmaxhq/aws-instance-metadata.git"
+  },
+  "keywords": [
+    "aws",
+    "ec2",
+    "instance",
+    "metadata"
+  ],
+  "author": "Trey Tacon <trey@mixmax.com> (https://mixmax.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mixmaxhq/aws-instance-metadata/issues"
+  },
+  "dependencies": {
+    "request": "^2.74.0"
+  }
+}
