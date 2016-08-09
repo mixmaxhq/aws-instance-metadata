@@ -15,11 +15,14 @@ purposes. We can use aws-instance-metadata to do just that. In order to tag all
 future error messages with the instance ID, we could do:
 
 ```
-var raven = require('raven');
+var raven = require('raven').Client(/* configuration omitted */);
 var awsInstanceMetadata = require('aws-instance-metadata');
 
 awsInstanceMetadata.fetch('instance-id', (err, instanceId) => {
-  if (err) throw err;
+  if (err) {
+    console.error(err);
+    return;
+  }
 
   raven.setTagsContext({
     instanceId: instanceId
