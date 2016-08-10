@@ -1,6 +1,6 @@
 {
   "name": "aws-instance-metadata",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A utility for retrieving the desired AWS EC2 instance metadata from a running instance",
   "main": "index.js",
   "scripts": {
