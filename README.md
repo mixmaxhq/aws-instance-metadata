@@ -8,6 +8,12 @@ instance. It returns takes a callback in order to return the data.
 $ yarn add aws-instance-metadata
 ```
 
+or
+
+```
+$ npm install aws-instance-metadata --save
+```
+
 ## Usage
 
 When using raven.js, it's common to add server level information for debugging
