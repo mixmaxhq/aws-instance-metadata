@@ -5,7 +5,7 @@ instance. It returns takes a callback in order to return the data.
 
 ## Install
 ```
-$ npm install aws-instance-metadata --save
+$ yarn add aws-instance-metadata
 ```
 
 ## Usage
