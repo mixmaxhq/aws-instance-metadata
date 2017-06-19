@@ -10,7 +10,7 @@ var request = require('superagent');
  * and returns that data to done. If there was an error, it is passed to done
  * instead.
  * @param  {String}   field The metadata field to retrieve.
- * @param  {Promise<String>} A promise containing the field data.
+ * @param  {Promise<String>} A promise that resolves to the field data.
  */
 function fetch(field) {
   // We use the IP address  as it is referenced from the AWS docs:
