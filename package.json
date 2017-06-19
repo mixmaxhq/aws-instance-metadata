@@ -1,6 +1,6 @@
 {
   "name": "aws-instance-metadata",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A utility for retrieving the desired AWS EC2 instance metadata from a running instance",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,6 @@
     "url": "https://github.com/mixmaxhq/aws-instance-metadata/issues"
   },
   "dependencies": {
-    "request": "^2.74.0"
+    "superagent": "3.5.2"
   }
 }
