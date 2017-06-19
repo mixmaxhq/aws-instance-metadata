@@ -21,20 +21,16 @@ purposes. We can use aws-instance-metadata to do just that. In order to tag all
 future error messages with the instance ID, we could do:
 
 ```
-var raven = require('raven').Client(/* configuration omitted */);
-var awsInstanceMetadata = require('aws-instance-metadata');
+const raven = require('raven').Client(/* configuration omitted */);
+const awsInstanceMetadata = require('aws-instance-metadata');
 
-awsInstanceMetadata.fetch('instance-id', (err, instanceId) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-
+awsInstanceMetadata.fetch('instance-id').then((instanceId) => {
   raven.setTagsContext({
     instanceId: instanceId
   });
-});
+}, console.error);
 ```
 
 ## Release History
+* 2.0.0 Use promises.
 * 1.0.0 Initial release.
