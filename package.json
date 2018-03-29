@@ -23,7 +23,7 @@
     "url": "https://github.com/mixmaxhq/aws-instance-metadata/issues"
   },
   "dependencies": {
-    "superagent": "3.5.2"
+    "got": "^8.3.0"
   },
   "devDependencies": {
     "eslint": ">=3",

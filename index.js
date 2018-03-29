@@ -3,7 +3,7 @@
  * instance. It takes a callback in order to return the data.
  */
 
-var request = require('superagent');
+const got = require('got');
 
 /**
  * fetch fetches the given metadata field for the currently running instance
@@ -15,7 +15,7 @@ var request = require('superagent');
 function fetch(field) {
   // We use the IP address  as it is referenced from the AWS docs:
   // https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
-  return request.get(`http://169.254.169.254/latest/meta-data/${field}`).then((res) => res.text);
+  return got(`http://169.254.169.254/latest/meta-data/${field}`).then((res) => res.text);
 }
 
 module.exports = {
