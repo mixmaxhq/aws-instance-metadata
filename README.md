@@ -30,7 +30,3 @@ awsInstanceMetadata.fetch('instance-id').then((instanceId) => {
   });
 }, console.error);
 ```
-
-## Release History
-* 2.0.0 Use promises.
-* 1.0.0 Initial release.
