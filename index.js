@@ -4,20 +4,76 @@
  */
 
 const got = require('got');
+const AWS = require('aws-sdk');
+
+// We use the IP address  as it is referenced from the AWS docs:
+// https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+const baseUrl = 'http://169.254.169.254/latest';
 
 /**
- * fetch fetches the given metadata field for the currently running instance
- * and returns that data to done. If there was an error, it is passed to done
- * instead.
+ * fetch fetches the given metadata field for the currently running instance.
  * @param  {String}   field The metadata field to retrieve.
  * @param  {Promise<String>} A promise that resolves to the field data.
  */
 function fetch(field) {
-  // We use the IP address  as it is referenced from the AWS docs:
-  // https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
-  return got(`http://169.254.169.254/latest/meta-data/${field}`).then((res) => res.text);
+  return got(`${baseUrl}/meta-data/${field}`).then((res) => res.text);
+}
+
+/**
+ * fetches and returns the dynamic instance document including instanceId and region
+ * for the currently running instance.
+ *
+ * Full response values are here:
+ *   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html
+ *
+ * @return     {Promise<{ [string]: mixed }>} The instance identity document.
+ */
+function fetchInstanceIdentity() {
+  return got(`${baseUrl}/dynamic/instance-identity/document`, {
+    json: true,
+  }).then((res) => res.body);
+}
+
+/**
+ * Retrieves a tag of the given name for the currently running instance. For
+ * example:
+ *
+ * // Returns the EB environment, like `notification-production`.
+ * const environmentName = await fetchTag('elasticbeanstalk:environment-name');
+ *
+ * For more details and a list of common tags see:
+ *  https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-tags.html
+ *
+ * @param      {string}   tag     The tag
+ * @return     {Promise<string>}  The value of the tag, or nul if it's not found.
+ */
+async function fetchTag(tag) {
+  const { instanceId, region } = await fetchInstanceIdentity();
+  const ec2 = new AWS.EC2({
+    region,
+  });
+
+  const result = await ec2
+    .describeTags({
+      Filters: [
+        {
+          Name: 'resource-id',
+          Values: [instanceId],
+        },
+        {
+          Name: 'key',
+          Values: [tag],
+        },
+      ],
+    })
+    .promise();
+  if (!result || !result.Tags || !result.Tags[0]) return null;
+
+  return result.Tags[0].Value;
 }
 
 module.exports = {
-  fetch
+  fetch,
+  fetchTag,
+  fetchInstanceIdentity,
 };
