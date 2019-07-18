@@ -4,7 +4,7 @@
   "description": "A utility for retrieving the desired AWS EC2 instance metadata from a running instance",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "eslint ."
   },
   "repository": {
@@ -23,12 +23,18 @@
     "url": "https://github.com/mixmaxhq/aws-instance-metadata/issues"
   },
   "dependencies": {
+    "aws-sdk": "^2.494.0",
     "got": "^8.3.0"
   },
   "devDependencies": {
-    "eslint": ">=3",
-    "eslint-config-mixmax": "^0.6.0",
-    "pre-commit": "^1.2.2"
+    "@mixmaxhq/prettier-config": "^1.0.0",
+    "eslint": "^6.0.1",
+    "eslint-config-mixmax": "^3.3.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.8.0",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.18.2"
   },
   "pre-commit": [
     "lint"
