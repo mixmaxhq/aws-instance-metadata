@@ -1,7 +1,7 @@
-const AWS = require('aws-sdk');
+import AWS from 'aws-sdk';
 jest.mock('got');
-const got = require('got');
-const { fetchTag } = require('../index');
+import got from 'got';
+import { fetchTag } from '../index';
 
 describe('fetchTag', () => {
   let ec2;
