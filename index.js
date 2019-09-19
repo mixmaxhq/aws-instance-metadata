@@ -71,7 +71,7 @@ async function fetchTag(tag) {
       ],
     })
     .promise();
-  if (!result || !result.Tags || !result.Tags[0]) return null;
+  if (!result || !result.Tags || !result.Tags.length) return null;
 
   return result.Tags[0].Value;
 }
