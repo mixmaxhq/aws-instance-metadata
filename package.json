@@ -4,6 +4,7 @@
   "description": "A utility for retrieving the desired AWS EC2 instance metadata from a running instance",
   "main": "index.js",
   "scripts": {
+    "ci": "npm run lint && npm test",
     "test": "jest",
     "lint": "eslint ."
   },
