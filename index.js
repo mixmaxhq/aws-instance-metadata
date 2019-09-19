@@ -8,7 +8,7 @@ const AWS = require('aws-sdk');
 
 // We use the IP address  as it is referenced from the AWS docs:
 // https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
-const baseUrl = 'http://169.254.169.254/latest';
+const baseUrl = 'http://169.254.169.254/2018-09-24';
 
 /**
  * fetch fetches the given metadata field for the currently running instance.

@@ -11,7 +11,7 @@ describe('fetch', () => {
 
   it('should fetch the given field', async () => {
     scope = nock('http://169.254.169.254')
-      .get('/latest/meta-data/local-ipv4')
+      .get('/2018-09-24/meta-data/local-ipv4')
       .reply(200, '10.10.2.229');
 
     await expect(fetch('local-ipv4')).resolves.toBe('10.10.2.229');
@@ -19,7 +19,7 @@ describe('fetch', () => {
 
   it('should fail to fetch missing fields', async () => {
     scope = nock('http://169.254.169.254')
-      .get('/latest/meta-data/instance-id')
+      .get('/2018-09-24/meta-data/instance-id')
       .reply(404);
 
     await expect(fetch('instance-id')).rejects.toThrow('instance-id');
@@ -33,7 +33,7 @@ describe('fetchTag', () => {
 
   beforeEach(() => {
     scope = nock('http://169.254.169.254')
-      .get('/latest/dynamic/instance-identity/document')
+      .get('/2018-09-24/dynamic/instance-identity/document')
       .reply(200, { instanceId: 'testInstance', region: 'us-east-1' });
     ec2 = new AWS.EC2({});
     jest.spyOn(AWS, 'EC2').mockImplementation(() => ec2);
