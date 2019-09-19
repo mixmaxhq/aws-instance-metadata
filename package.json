@@ -4,6 +4,7 @@
   "description": "A utility for retrieving the desired AWS EC2 instance metadata from a running instance",
   "main": "index.js",
   "scripts": {
+    "ci": "npm run lint && npm test",
     "test": "jest",
     "lint": "eslint ."
   },
@@ -27,12 +28,15 @@
     "got": "^8.3.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.6.0",
     "@mixmaxhq/prettier-config": "^1.0.0",
     "eslint": "^6.0.1",
     "eslint-config-mixmax": "^3.3.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
+    "nock": "^11.3.4",
     "pre-commit": "^1.2.2",
     "prettier": "^1.18.2"
   },

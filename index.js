@@ -16,7 +16,11 @@ const baseUrl = 'http://169.254.169.254/2018-09-24';
  * @param  {Promise<String>} A promise that resolves to the field data.
  */
 function fetch(field) {
-  return got(`${baseUrl}/meta-data/${field}`).then((res) => res.text);
+  return got(`${baseUrl}/meta-data/${field}`).then(
+    (res) => res.body,
+    (err) =>
+      Promise.reject(err.statusCode === 404 ? new Error(`no such meta-data field ${field}`) : err)
+  );
 }
 
 /**
@@ -67,7 +71,7 @@ async function fetchTag(tag) {
       ],
     })
     .promise();
-  if (!result || !result.Tags || !result.Tags[0]) return null;
+  if (!result || !result.Tags || !result.Tags.length) return null;
 
   return result.Tags[0].Value;
 }
