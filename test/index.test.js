@@ -1,6 +1,30 @@
 import AWS from 'aws-sdk';
 import nock from 'nock';
-import { fetchTag } from '../index';
+import { fetch, fetchTag } from '../index';
+
+describe('fetch', () => {
+  let scope;
+
+  afterEach(() => {
+    scope.done();
+  });
+
+  it('should fetch the given field', async () => {
+    scope = nock('http://169.254.169.254')
+      .get('/latest/meta-data/local-ipv4')
+      .reply(200, '10.10.2.229');
+
+    await expect(fetch('local-ipv4')).resolves.toBe('10.10.2.229');
+  });
+
+  it('should fail to fetch missing fields', async () => {
+    scope = nock('http://169.254.169.254')
+      .get('/latest/meta-data/instance-id')
+      .reply(404);
+
+    await expect(fetch('instance-id')).rejects.toThrow('instance-id');
+  });
+});
 
 describe('fetchTag', () => {
   let ec2;
