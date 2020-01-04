@@ -4,8 +4,6 @@
 @Library('scm-service-library') _
 
 npmModulePipeline {
-  nodeVersion = '10.16.0'
-  npmVersion = '6.4.1'
   coverageThreshold = '1.00'
 }
 
