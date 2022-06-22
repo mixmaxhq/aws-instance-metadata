@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.494.0",
-    "got": "^8.3.0"
+    "got": "^11.8.5"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
