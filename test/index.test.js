@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+const { EC2Client, DescribeTagsCommand } = require('@aws-sdk/client-ec2');
 import nock from 'nock';
 import { fetch, fetchTag } from '../index';
 
@@ -27,7 +27,7 @@ describe('fetch', () => {
 });
 
 describe('fetchTag', () => {
-  let ec2;
+  let ec2SendSpy;
 
   let scope;
 
@@ -35,57 +35,63 @@ describe('fetchTag', () => {
     scope = nock('http://169.254.169.254')
       .get('/2018-09-24/dynamic/instance-identity/document')
       .reply(200, { instanceId: 'testInstance', region: 'us-east-1' });
-    ec2 = new AWS.EC2({});
-    jest.spyOn(AWS, 'EC2').mockImplementation(() => ec2);
+    ec2SendSpy = jest.spyOn(EC2Client.prototype, 'send');
   });
 
   afterEach(() => {
     scope.done();
 
-    expect(ec2.describeTags).toHaveBeenCalledWith({
-      Filters: [
-        {
-          Name: 'resource-id',
-          Values: ['testInstance'],
+    expect(ec2SendSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          Filters: [
+            {
+              Name: 'resource-id',
+              Values: ['testInstance'],
+            },
+            {
+              Name: 'key',
+              Values: ['elasticbeanstalk:environment-name'],
+            },
+          ],
         },
-        {
-          Name: 'key',
-          Values: ['elasticbeanstalk:environment-name'],
-        },
-      ],
-    });
+      })
+    );
   });
 
   it('should return the returned tag', async () => {
-    jest.spyOn(ec2, 'describeTags').mockImplementation(() => {
-      return {
-        promise: async () => ({ Tags: [{ Value: 'notifications-worker-production' }] }),
-      };
+    ec2SendSpy.mockImplementation((command) => {
+      if (command instanceof DescribeTagsCommand) {
+        return {
+          Tags: [{ Value: 'notifications-worker-production' }],
+        };
+      }
+      return {};
     });
 
     await expect(fetchTag('elasticbeanstalk:environment-name')).resolves.toEqual(
       'notifications-worker-production'
     );
-    expect(ec2.describeTags).toHaveBeenCalledWith({
-      Filters: [
-        {
-          Name: 'resource-id',
-          Values: ['testInstance'],
+    expect(ec2SendSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          Filters: [
+            {
+              Name: 'resource-id',
+              Values: ['testInstance'],
+            },
+            {
+              Name: 'key',
+              Values: ['elasticbeanstalk:environment-name'],
+            },
+          ],
         },
-        {
-          Name: 'key',
-          Values: ['elasticbeanstalk:environment-name'],
-        },
-      ],
-    });
+      })
+    );
   });
 
   it('should handle empty responses', async () => {
-    jest.spyOn(ec2, 'describeTags').mockImplementation(() => {
-      return {
-        promise: () => Promise.resolve(),
-      };
-    });
+    ec2SendSpy.mockImplementation(() => {});
 
     await expect(fetchTag('elasticbeanstalk:environment-name')).resolves.toBe(null);
   });

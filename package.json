@@ -24,7 +24,7 @@
     "url": "https://github.com/mixmaxhq/aws-instance-metadata/issues"
   },
   "dependencies": {
-    "aws-sdk": "^2.494.0",
+    "@aws-sdk/client-ec2": "^3.332.0",
     "got": "^8.3.0"
   },
   "devDependencies": {
