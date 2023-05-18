@@ -4,7 +4,7 @@
  */
 
 const got = require('got');
-const AWS = require('aws-sdk');
+const { EC2Client, DescribeTagsCommand } = require('@aws-sdk/client-ec2');
 
 // We use the IP address  as it is referenced from the AWS docs:
 // https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
@@ -53,12 +53,12 @@ function fetchInstanceIdentity() {
  */
 async function fetchTag(tag) {
   const { instanceId, region } = await fetchInstanceIdentity();
-  const ec2 = new AWS.EC2({
+  const ec2 = new EC2Client({
     region,
   });
 
-  const result = await ec2
-    .describeTags({
+  const result = await ec2.send(
+    new DescribeTagsCommand({
       Filters: [
         {
           Name: 'resource-id',
@@ -70,7 +70,7 @@ async function fetchTag(tag) {
         },
       ],
     })
-    .promise();
+  );
   if (!result || !result.Tags || !result.Tags.length) return null;
 
   return result.Tags[0].Value;
